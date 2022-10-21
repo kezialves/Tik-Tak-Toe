@@ -56,7 +56,7 @@
 #define TAB_MR  "\u252B" // ┫ (middle-right)
 #define TAB_BR  "\u251B" // ┛ (bottom-right)
 
-int main () {
+int teste () {
 
     /*printf (BG_WHITE(RED(BOLD("(___  )                            ( )          ( ) ( )       (_ ) ( )           \n"))));
     printf (BG_WHITE(RED(BOLD("    | |   _      __     _         _| |   _ _    | | | |   __   | | | |__     _ _ \n"))));

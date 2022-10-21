@@ -2,6 +2,9 @@
 // Kézia Alves
 // 22.1.4026
 
+#ifndef FORMATTING_H_
+#define FORMATTING_H_
+
 // cores e formatos de texto
 #define ANSI_RESET            "\x1b[0m"  // desativa os efeitos anteriores
 #define ANSI_BOLD             "\x1b[1m"  // coloca o texto em negrito
@@ -27,3 +30,13 @@
 #define TAB_TR  "\u2513" // ┓ (top-right)
 #define TAB_MR  "\u252B" // ┫ (middle-right)
 #define TAB_BR  "\u251B" // ┛ (bottom-right)
+
+// macro que define o máximo de caracteres do nome de um jogador
+#define PLAYER_NAME 256
+// macro que define o máximo de caracteres de um comando
+#define COMMAND_NAME 267 // 7 para o comando e, no caso do "salvar", + 256 para o nome + 4 para o ".txt"
+
+// macro que define o máximo de caracteres do nome de um arquivo
+#define FILE_NAME 260 // 256 para o nome + 4 para o ".txt"
+
+#endif
