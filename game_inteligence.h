@@ -5,7 +5,12 @@
 #ifndef GAME_INTELIGENCE_H_
 #define GAME_INTELIGENCE_H_
 
+#include "player.h"
+
 // função que roda o jogo contra o computador
-void player_vs_computer ();
+int player_vs_computer ();
+
+// função que calcula a melhor posição
+void calculate_position (char board[][3]);
 
 #endif

@@ -20,9 +20,13 @@ int player_vs_player () {
 
     Player player1, player2;
     char command[COMMAND_NAME];
+    char command_name[COMMAND_NAME];
     int current_player = 0;
     int coordinates, x, y;
     int marked_positions = 0;
+
+    // initializes_player (&player1);
+    // initializes_player (&player2);
 
     getchar ();
 
@@ -36,7 +40,7 @@ int player_vs_player () {
     fgets (player2.name, PLAYER_NAME, stdin);
     printf ("\n");
 
-    verify_name (1, player2.name);
+    verify_name_p2 (player1.name, player2.name);
 
     player1.name[strlen (player1.name) - 1] = '\0';
     player2.name[strlen (player2.name) - 1] = '\0';
@@ -46,7 +50,10 @@ int player_vs_player () {
     printf ("%s, digite o comando: ", player1.name);
     fgets (command, COMMAND_NAME, stdin);
 
-    while (command[0] == 'm') { // enquanto o comando for "marcar", o jogo roda
+    strcpy (command_name, command);
+    command_name[6] = '\0';
+
+    while (!strcmp (command_name, "marcar")) { // enquanto o comando for "marcar", o jogo roda
 
         while (marked_positions <= 9) {
             
@@ -111,7 +118,8 @@ int player_vs_player () {
                 if (marked_positions >= 5) {
 
                     if (verify_winner (board) == 2) {
-                        return 2;
+                        printf ("Parabéns, %s! Você venceu ;)", player2.name);
+                        printf ("\n\n");
                     }
                 }
             }
@@ -151,12 +159,16 @@ int player_vs_player () {
                 if (marked_positions >= 5) {
 
                     if (verify_winner (board) == 1) {
-                        return 1;
+                        printf ("Parabéns, %s! Você venceu ;)", player1.name);
+                        printf ("\n\n");
                     }
                 }
             }
         }
     }
+
+    printf ("Eta! Deu velha, ninguém venceu ;)");
+    printf ("\n\n");
 
     return 0;
 }

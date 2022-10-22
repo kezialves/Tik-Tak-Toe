@@ -72,3 +72,7 @@ void display_board (char board[3][3]) {
     printf ("\t"TAB_BL TAB_HOR TAB_HOR TAB_HOR TAB_BJ TAB_HOR TAB_HOR TAB_HOR TAB_BJ TAB_HOR TAB_HOR TAB_HOR TAB_BJ TAB_HOR TAB_HOR TAB_HOR TAB_BR "\n");
     printf ("\n");
 }
+
+// void clear_screen () {
+//     printf("\e[1;1H\e[2J");
+// }

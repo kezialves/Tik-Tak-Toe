@@ -5,9 +5,9 @@
 #include <stdio.h>
 #include <unistd.h>
 
+#include "player.h"
 #include "game_essential.h"
 #include "formatting.h"
-#include "player.h"
 #include "player_vs_player.h"
 #include "game_inteligence.h"
 #include "game_interface.h"
@@ -98,23 +98,16 @@ void new_game () {
     }
 
     else {
-
-        if (player_vs_player () == 1) {
-            printf ("Parabéns, jog1! Você venceu ;)");
-            printf ("\n\n");
-        }
-
-        else if (player_vs_player () == 2) {
-            printf ("Parabéns, jog2! Você venceu ;)");
-            printf ("\n\n");
-        }
-
-        else {
-            printf ("Eta! Deu velha, ninguém venceu ;)");
-            printf ("\n\n");
-        }
+        player_vs_player ();
     }
 
     display_menu ();
     choose_menu (1);
+}
+
+void initializes_player (Player *player) {
+
+    player->victories = 0;
+    player->draws = 0;
+    player->defeats = 0;
 }

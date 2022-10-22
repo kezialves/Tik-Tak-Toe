@@ -5,6 +5,8 @@
 #ifndef GAME_ESSENTIAL_H_
 #define GAME_ESSENTIAL_H_
 
+#include "player.h"
+
 // função que recebe a opção
 void choose_menu (int time);
 
@@ -13,5 +15,8 @@ void close_game ();
 
 // função que inicia um novo jogo
 void new_game ();
+
+// função que inicializa o jogador
+void initializes_player (Player *player);
 
 #endif

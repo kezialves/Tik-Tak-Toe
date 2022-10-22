@@ -20,4 +20,7 @@ void display_ranking ();
 // função que imprime o tabuleiro
 void display_board (char board[3][3]);
 
+// função que llmpa a tela do terminal
+// void clear_screen ();
+
 #endif

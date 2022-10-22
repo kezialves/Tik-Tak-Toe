@@ -9,8 +9,8 @@
 
 int main () {
 
-    display_name ();
-    display_menu ();
+    //display_name ();
+    //display_menu ();
     choose_menu (0);
 
     return 0;
