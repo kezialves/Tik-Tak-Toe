@@ -4,10 +4,12 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "validations.h"
 #include "formatting.h"
-#include "player.h"
+#include "structs.h"
+#include "game_essential.h"
 
 void verify_name (int number_of_player, char *name) {
 
@@ -73,17 +75,54 @@ void verify_name_p2 (char *player1_name, char *player2_name) {
     }
 }
 
-void verify_positions (char board[][3], int x, int y, char *name) {
+void verify_positions (char board[][3], int *x, int *y, char *name) {
 
-    char command[COMMAND_NAME];
+    Command command;
+    int coordinates;
 
-    while (board[x][y] != ' ') {
+    while (*x < 0 || *x > 2 || *y < 0 || *y > 2) {
 
-        printf (RED(BOLD("ERRO: Posição já preenchida.")));
+        printf (RED(BOLD("\nERRO: Posição inválida.")));
         printf ("\n\n");
 
-        printf ("%s, digite o comando: ", name);
-        fgets (command, COMMAND_NAME, stdin);
+        get_command (name, &command);
+
+        command.second_command[strlen (command.second_command) - 1] = '\0';
+        
+        coordinates = atoi (command.second_command);
+
+        *x = (((coordinates / 10) % 10)) - 1;
+        *y = (coordinates % 10) - 1;
+    }
+
+    while (board[*x][*y] != ' ') {
+
+        printf (RED(BOLD("\nERRO: Posição já preenchida.")));
+        printf ("\n\n");
+
+        get_command (name, &command);
+
+        command.second_command[strlen (command.second_command) - 1] = '\0';
+        
+        coordinates = atoi (command.second_command);
+
+        *x = (((coordinates / 10) % 10)) - 1;
+        *y = (coordinates % 10) - 1;
+
+        while (*x < 1 || *x > 3 || *y < 1 || *y > 3) {
+
+            printf (RED(BOLD("\nERRO: Posição inválida.")));
+            printf ("\n\n");
+
+            get_command (name, &command);
+
+            command.second_command[strlen (command.second_command) - 1] = '\0';
+        
+            coordinates = atoi (command.second_command);
+
+            *x = (((coordinates / 10) % 10)) - 1;
+            *y = (coordinates % 10) - 1;
+        }
     }
 }
 
@@ -159,6 +198,41 @@ int verify_winner (char board[][3]) {
         else if (sum == 333) {
             return 2;
         }
+    }
+
+    return 0;
+}
+
+void verify_file_name (char *file_name) {
+
+    int size_of_file_name = strlen (file_name);
+
+    file_name[size_of_file_name - 1] = '\0';
+
+    while (file_name[size_of_file_name - 5] != '.' ||
+            file_name[size_of_file_name - 4] != 't' ||
+            file_name[size_of_file_name - 3] != 'x' ||
+            file_name[size_of_file_name - 2] != 't') {
+
+        printf (RED(BOLD("\nERRO: O tipo do arquivo é inválido, informe um .txt\n\n")));
+
+        printf ("Digite o nome do arquivo do jogo: ");
+        fgets (file_name, FILE_NAME, stdin);
+        printf ("\n");
+
+        size_of_file_name = strlen (file_name);
+    }
+}
+
+int verify_file_exists (char * file_name) {
+
+    FILE * file;
+
+    if ((file = fopen(file_name, "r"))){
+
+        fclose(file);
+
+        return 1;
     }
 
     return 0;

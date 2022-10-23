@@ -9,12 +9,13 @@
 
 #include "game_inteligence.h"
 #include "formatting.h"
-#include "player.h"
+#include "structs.h"
 #include "game_interface.h"
 #include "validations.h"
 
 int player_vs_computer () {
 
+    // inicializa o tabuleiro
     char board[3][3] = { {' ', ' ', ' '},
                          {' ', ' ', ' '},
                          {' ', ' ', ' '} };
@@ -30,8 +31,6 @@ int player_vs_computer () {
     // initializes_player (&computer);
 
     srand (time(NULL));
-
-    getchar ();
 
     printf ("Digite o nome do jogador 1: ");
     fgets (player.name, PLAYER_NAME, stdin);
@@ -183,7 +182,7 @@ int player_vs_computer () {
 
 void calculate_position (char board[][3]) {
 
-    int random;
+    int random, random_y;
 
     // se o jogador 1 estiver quase marcando uma linha, o bot barra
     // se o jogador 1 estiver quase marcando uma coluna, o bot barra
@@ -444,9 +443,6 @@ void calculate_position (char board[][3]) {
     // se já estiver marcada, o bot tenta barrar os L's
     
     else if (board[0][2] == 'x' && board [2][0] == 'x') {
-
-        int random_y;
-
         do {
             random = rand () % 2;
             random_y = rand () % 2;
@@ -469,5 +465,18 @@ void calculate_position (char board[][3]) {
 
     else if (board[1][1] == 'x' && board [2][0] == 'x' && board[0][2] == ' ') {
         board[0][2] = 'o';
+    }
+
+    else {
+        do {
+            random = rand () % 2;
+            random_y = rand () % 2;
+
+            if (random == 1) random++;
+            if (random_y == 1) random_y++;
+        }
+        while (board[random][random_y] != ' ');
+
+        board[random][random_y] = 'o';
     }
 }

@@ -23,4 +23,10 @@ void display_board (char board[3][3]);
 // função que llmpa a tela do terminal
 // void clear_screen ();
 
+// função que limpa o buffer de entrada
+// void clean_buffer ();
+
+// função que limpa o buffer de entrada
+// void clear_buffer ();
+
 #endif

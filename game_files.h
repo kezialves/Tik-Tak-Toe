@@ -14,6 +14,6 @@ void continue_saved_game ();
 void continue_current_game ();
 
 // função que salva o jogo
-void save_game (char file_name[FILE_NAME]);
+void save_game (char file_name[FILE_NAME], char *player1_name, char *player2_name, char board[][3], int last_player);
 
 #endif

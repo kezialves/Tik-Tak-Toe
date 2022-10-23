@@ -8,167 +8,114 @@
 
 #include "player_vs_player.h"
 #include "formatting.h"
-#include "player.h"
+#include "structs.h"
+#include "game_essential.h"
 #include "game_interface.h"
+#include "game_files.h"
 #include "validations.h"
 
-int player_vs_player () {
+int player_vs_player (char board[][3], Game game, Player *player1, Player *player2) {
 
-    char board[3][3] = { {' ', ' ', ' '},
-                         {' ', ' ', ' '},
-                         {' ', ' ', ' '} };
-
-    Player player1, player2;
-    char command[COMMAND_NAME];
-    char command_name[COMMAND_NAME];
-    int current_player = 0;
-    int coordinates, x, y;
-    int marked_positions = 0;
-
-    // initializes_player (&player1);
-    // initializes_player (&player2);
-
-    getchar ();
-
-    printf ("Digite o nome do jogador 1: ");
-    fgets (player1.name, PLAYER_NAME, stdin);
-    printf ("\n");
-
-    verify_name (1, player1.name);
-
-    printf ("Digite o nome do jogador 2: ");
-    fgets (player2.name, PLAYER_NAME, stdin);
-    printf ("\n");
-
-    verify_name_p2 (player1.name, player2.name);
-
-    player1.name[strlen (player1.name) - 1] = '\0';
-    player2.name[strlen (player2.name) - 1] = '\0';
+    Command command;
 
     display_board (board);
 
-    printf ("%s, digite o comando: ", player1.name);
-    fgets (command, COMMAND_NAME, stdin);
+    while (1) {
 
-    strcpy (command_name, command);
-    command_name[6] = '\0';
+        if (game.last_player == 2) {
 
-    while (!strcmp (command_name, "marcar")) { // enquanto o comando for "marcar", o jogo roda
+            get_command (player1->name, &command);
 
-        while (marked_positions <= 9) {
-            
-            if (current_player == 0) {
+            if (!strcmp(command.first_command, "marcar")) {
 
-                while (command[7] < 49 || command[7] > 51 || command[8] < 49 || command[8] > 51) {
+                int coordinates, x, y;
         
-                    printf (RED(BOLD("\nERRO: Posição inválida.")));
-                    printf ("\n\n");
+                coordinates = atoi (command.second_command);
 
-                    printf ("%s, digite o comando: ", player1.name);
-                    fgets (command, COMMAND_NAME, stdin);
-                }
-
-                command[0] = command [7];
-                command[1] = command [8];
-                command[2] = '\0';
-
-                coordinates = atoi (command);
                 x = (((coordinates / 10) % 10)) - 1;
                 y = (coordinates % 10) - 1;
 
-                board[x][y] = 'x';
+                board[3][3] = mark_position (board, &x, &y, 1, player1->name);
 
-                marked_positions++;
-                current_player += 2;
-
-                display_board (board);
-            }
-
-            if (current_player == 2) {
-
-                printf ("%s, digite o comando: ", player2.name);
-                fgets (command, COMMAND_NAME, stdin);
-
-                while (command[7] < 49 || command[7] > 51 || command[8] < 49 || command[8] > 51) {
-        
-                    printf (RED(BOLD("\nERRO: Posição inválida.")));
-                    printf ("\n\n");
-
-                    printf ("%s, digite o comando: ", player2.name);
-                    fgets (command, COMMAND_NAME, stdin);
-                }
-
-                command[0] = command [7];
-                command[1] = command [8];
-                command[2] = '\0';
-
-                coordinates = atoi (command);
-                x = (((coordinates / 10) % 10)) - 1;
-                y = (coordinates % 10) - 1;
-
-                verify_positions (board, x, y, player2.name);
-
-                board[x][y] = 'o';
-
-                marked_positions++;
-                current_player--;
+                game.marked_positions++;
 
                 display_board (board);
 
-                if (marked_positions >= 5) {
-
-                    if (verify_winner (board) == 2) {
-                        printf ("Parabéns, %s! Você venceu ;)", player2.name);
-                        printf ("\n\n");
-                    }
-                }
-            }
-
-            if (current_player == 1) {
-
-                printf ("%s, digite o comando: ", player1.name);
-                fgets (command, COMMAND_NAME, stdin);
-
-                while (command[7] < 49 || command[7] > 51 || command[8] < 49 || command[8] > 51) {
-        
-                    printf (RED(BOLD("\nERRO: Posição inválida.")));
-                    printf ("\n\n");
-
-                    printf ("%s, digite o comando: ", player1.name);
-                    fgets (command, COMMAND_NAME, stdin);
-                }
-
-                command[0] = command [7];
-                command[1] = command [8];
-                command[2] = '\0';
-
-                coordinates = atoi (command);
-                
-                x = (((coordinates / 10) % 10)) - 1;
-                y = (coordinates % 10) - 1;
-
-                verify_positions (board, x, y, player1.name);
-
-                board[x][y] = 'x';
-
-                marked_positions++;
-                current_player++;
-
-                display_board (board);
-
-                if (marked_positions >= 5) {
+                if (game.marked_positions >= 5) {
 
                     if (verify_winner (board) == 1) {
-                        printf ("Parabéns, %s! Você venceu ;)", player1.name);
+                        printf ("Parabéns, %s! Você venceu ;)", player1->name);
                         printf ("\n\n");
+                        break;
                     }
                 }
+
+                game.last_player = 1;
+                game.marked_positions++;
+            }
+
+            else if (!strcmp(command.first_command, "salvar")) {
+                save_game (command.second_command, player1->name, player2->name, board, 2);
+                display_menu ();
+            }
+
+            else if (!strcmp(command.first_command, "voltar")) {
+                strcpy (command.second_command, "current_game.txt");
+                save_game (command.second_command, player1->name, player2->name, board, 2);
+                display_menu ();
+            }
+        }
+
+        else if (game.last_player == 1) {
+
+            get_command (player2->name, &command);
+
+            if (!strcmp(command.first_command, "marcar")) {
+
+                int coordinates, x, y;
+        
+                coordinates = atoi (command.second_command);
+
+                x = (((coordinates / 10) % 10)) - 1;
+                y = (coordinates % 10) - 1;
+
+                board[3][3] = mark_position (board, &x, &y, 2, player2->name);
+
+                game.marked_positions++;
+
+                display_board (board);
+
+                if (game.marked_positions >= 5) {
+
+                    if (verify_winner (board) == 2) {
+                        printf ("Parabéns, %s! Você venceu ;)", player2->name);
+                        printf ("\n\n");
+                        break;
+                    }
+                }
+
+                game.last_player = 2;
+                game.marked_positions++;
+            }
+
+            if (game.marked_positions == 9) {
+                printf ("Eta! Deu velha, ninguém venceu ;)");
+                printf ("\n\n");
+                break;
+            }
+
+            else if (!strcmp(command.first_command, "salvar")) {
+                save_game (command.second_command, player1->name, player2->name, board, 1);
+                display_menu ();
+            }
+
+            else if (!strcmp(command.first_command, "voltar")) {
+                strcpy (command.second_command, "current_game.txt");
+                save_game (command.second_command, player1->name, player2->name, board, 1);
+                display_menu ();
             }
         }
     }
-
-    printf ("Eta! Deu velha, ninguém venceu ;)");
-    printf ("\n\n");
 
     return 0;
 }

@@ -44,17 +44,17 @@ void display_ascii_txt (char file_name[]) {
 void display_menu () {
 
     printf (CYAN(BOLD("\t0. Sair do jogo\n")));
-    usleep (500000);
+    // usleep (500000);
     printf (CYAN(BOLD("\t1. Começar um novo jogo\n")));
-    usleep (500000);
+    // usleep (500000);
     printf (CYAN(BOLD("\t2. Continuar um jogo salvo\n")));
-    usleep (500000);
+    // usleep (500000);
     printf (CYAN(BOLD("\t3. Continuar o jogo atual\n")));
-    usleep (500000);
+    // usleep (500000);
     printf (CYAN(BOLD("\t4. Exibir o ranking\n")));
-    usleep (500000);
+    // usleep (500000);
     printf (CYAN(BOLD("\tDurante o jogo digite “voltar” para retornar ao menu.\n")));
-    usleep (500000);
+    // usleep (500000);
     printf ("\n\n");
 }
 
@@ -75,4 +75,21 @@ void display_board (char board[3][3]) {
 
 // void clear_screen () {
 //     printf("\e[1;1H\e[2J");
+// }
+
+// void clean_buffer () {
+    
+//     int c;
+
+//     do {
+//         c = getchar();
+//     } while (c != '\n' && c != EOF);
+// }
+
+// void clear_buffer () {
+    
+//     char c;
+
+//     scanf("%c", &c);
+//     getchar();
 // }

@@ -5,7 +5,7 @@
 #ifndef GAME_INTELIGENCE_H_
 #define GAME_INTELIGENCE_H_
 
-#include "player.h"
+#include "structs.h"
 
 // função que roda o jogo contra o computador
 int player_vs_computer ();

@@ -13,9 +13,15 @@ void verify_name (int number_of_player, char *name);
 void verify_name_p2 (char *player1_name, char *player2_name);
 
 // função que verifica se a posição já foi marcada
-void verify_positions (char board[][3], int x, int y, char *name);
+void verify_positions (char board[][3], int *x, int *y, char *name);
 
 // função que verifica se alguém ganhou
 int verify_winner (char board[][3]);
+
+// função que verifica se o tipo do arquivo é válido
+void verify_file_name (char * file_name);
+
+// função que verifica se o arquivo buscado existe
+int verify_file_exists (char * file_name);
 
 #endif
