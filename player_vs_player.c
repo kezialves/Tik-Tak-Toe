@@ -44,19 +44,23 @@ int player_vs_player (char board[][3], Game game, Player *player1, Player *playe
                 if (game.marked_positions >= 5) {
 
                     if (verify_winner (board) == 1) {
+
                         printf ("Parabéns, %s! Você venceu ;)", player1->name);
                         printf ("\n\n");
+
+                        player1->victories++;
+                        player2->defeats++;
+
                         break;
                     }
                 }
 
                 game.last_player = 1;
-                game.marked_positions++;
             }
 
             else if (!strcmp(command.first_command, "salvar")) {
                 save_game (command.second_command, player1->name, player2->name, board, 2);
-                display_menu ();
+                printf (CYAN(BOLD("\nO arquivo do jogo foi criado com sucesso ;)\n\n")));
             }
 
             else if (!strcmp(command.first_command, "voltar")) {
@@ -88,25 +92,23 @@ int player_vs_player (char board[][3], Game game, Player *player1, Player *playe
                 if (game.marked_positions >= 5) {
 
                     if (verify_winner (board) == 2) {
+
                         printf ("Parabéns, %s! Você venceu ;)", player2->name);
                         printf ("\n\n");
+
+                        player2->victories++;
+                        player1->defeats++;
+
                         break;
                     }
                 }
 
                 game.last_player = 2;
-                game.marked_positions++;
-            }
-
-            if (game.marked_positions == 9) {
-                printf ("Eta! Deu velha, ninguém venceu ;)");
-                printf ("\n\n");
-                break;
             }
 
             else if (!strcmp(command.first_command, "salvar")) {
                 save_game (command.second_command, player1->name, player2->name, board, 1);
-                display_menu ();
+                printf (CYAN(BOLD("\nO arquivo do jogo foi criado com sucesso ;)\n\n")));
             }
 
             else if (!strcmp(command.first_command, "voltar")) {
@@ -114,6 +116,16 @@ int player_vs_player (char board[][3], Game game, Player *player1, Player *playe
                 save_game (command.second_command, player1->name, player2->name, board, 1);
                 display_menu ();
             }
+        }
+
+        if (game.marked_positions == 9) {
+
+            printf ("Eta! Deu velha, ninguém venceu ;)\n\n");
+
+            player1->draws++;
+            player2->draws++;
+
+            break;
         }
     }
 

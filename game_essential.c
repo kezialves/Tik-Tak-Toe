@@ -71,8 +71,12 @@ void choose_menu (int time) {
 
 void close_game () {
 
+    clear_screen ();
     usleep (500000);
-    printf (CYAN(BOLD("\tAté a próxima ;)\n\n")));
+    printf (CYAN(BOLD("\n\tAté a próxima ;)\n\n")));
+    usleep (500000);
+    display_ascii_txt ("pucca_ascii.txt");
+    printf ("\n");
     usleep (500000);
 }
 
@@ -137,9 +141,11 @@ void new_game () {
         player2.name[strlen (player2.name) - 1] = '\0';
     }
 
+    clear_screen ();
+
     // chama a função correspondente ao número de jogadores
     if (!strcmp (number_of_players, "1\n")) {
-        player_vs_computer ();
+        player_vs_computer (board, game, &player1);
     }
 
     else {
@@ -147,8 +153,10 @@ void new_game () {
     }
 
     printf ("\nDigite qualquer tecla para continuar: ");
-    printf ("\n");
+    char key[COMMAND_NAME];
+    fgets (key, COMMAND_NAME, stdin);
 
+    clear_screen ();
     display_menu ();
     choose_menu (1);
 }

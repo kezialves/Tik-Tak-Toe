@@ -9,7 +9,7 @@
 
 int main () {
 
-    //display_name ();
+    display_name ();
     display_menu ();
     choose_menu (0);
 

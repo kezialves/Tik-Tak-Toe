@@ -19,9 +19,12 @@ void verify_positions (char board[][3], int *x, int *y, char *name);
 int verify_winner (char board[][3]);
 
 // função que verifica se o tipo do arquivo é válido
-void verify_file_name (char * file_name);
+void verify_file_name (char *file_name);
 
 // função que verifica se o arquivo buscado existe
-int verify_file_exists (char * file_name);
+int verify_file_exists (char *file_name);
+
+// função que valida o arquivo como um todo
+void verify_file (char *file_name);
 
 #endif

@@ -11,77 +11,87 @@
 #include "formatting.h"
 #include "structs.h"
 #include "game_interface.h"
+#include "game_essential.h"
+#include "game_files.h"
 #include "validations.h"
 
-int player_vs_computer () {
+int player_vs_computer (char board[][3], Game game, Player *player1) {
 
-    // inicializa o tabuleiro
-    char board[3][3] = { {' ', ' ', ' '},
-                         {' ', ' ', ' '},
-                         {' ', ' ', ' '} };
+    Command command;
 
-    Player player;
-    // Player computer;
-    char command[COMMAND_NAME];
-    int current_player = 0;
-    int coordinates, x, y;
-    int marked_positions = 0;
-
-    // initializes_player (&player);
-    // initializes_player (&computer);
+    // cria e inicializa a struct do computador
+    Player computer;
+    strcpy (computer.name, "Computador");
+    initializes_player (&computer);
 
     srand (time(NULL));
 
-    printf ("Digite o nome do jogador 1: ");
-    fgets (player.name, PLAYER_NAME, stdin);
-    printf ("\n");
-
-    verify_name (1, player.name);
-
-    player.name[strlen (player.name) - 1] = '\0';
-
     display_board (board);
 
-    printf ("%s, digite o comando: ", player.name);
-    fgets (command, COMMAND_NAME, stdin);
+    while (1) {
 
-    while (command[0] == 'm') { // enquanto o comando for "marcar", o jogo roda
+        if (game.last_player == 2) {
 
-        while (marked_positions <= 9) {
-            
-            if (current_player == 0) {
+            get_command (player1->name, &command);
 
-                while (command[7] < 49 || command[7] > 51 || command[8] < 49 || command[8] > 51) {
+            if (!strcmp(command.first_command, "marcar")) {
+
+                int coordinates, x, y;
         
-                    printf (RED(BOLD("\nERRO: Posição inválida.")));
-                    printf ("\n\n");
+                coordinates = atoi (command.second_command);
 
-                    printf ("%s, digite o comando: ", player.name);
-                    fgets (command, COMMAND_NAME, stdin);
-                }
-
-                command[0] = command [7];
-                command[1] = command [8];
-                command[2] = '\0';
-
-                coordinates = atoi (command);
                 x = (((coordinates / 10) % 10)) - 1;
                 y = (coordinates % 10) - 1;
 
-                board[x][y] = 'x';
+                board[3][3] = mark_position (board, &x, &y, 1, player1->name);
+
+                game.marked_positions++;
 
                 display_board (board);
 
-                printf ("\nMinha vez :)\n");
+                if (game.marked_positions >= 5) {
 
+                    if (verify_winner (board) == 1) {
+
+                        printf ("Parabéns, %s! Você venceu ;)\n\n", player1->name);
+
+                        player1->victories++;
+                        computer.defeats++;
+
+                        break;
+                    }
+                }
+
+                game.last_player = 1;
+            }
+
+            else if (!strcmp(command.first_command, "salvar")) {
+                save_game (command.second_command, player1->name, computer.name, board, 1);
+                printf (CYAN(BOLD("\nO arquivo do jogo foi criado com sucesso ;)\n\n")));
+            }
+
+            else if (!strcmp(command.first_command, "voltar")) {
+                strcpy (command.second_command, "current_game.txt");
+                save_game (command.second_command, player1->name, computer.name, board, 1);
+                display_menu ();
+            }
+        }
+
+        else if (game.last_player == 1) {
+
+            int x, y;
+
+            printf ("\nMinha vez :)\n");
+
+            // se for a primeira jogada do computador, não tem muito critério pra melhor posição
+            if (game.marked_positions == 1) {
+                
                 // se o jogador 1 marcar em algum dos cantos, o bot marca no meio
-
                 if (board[0][0] == 'x' || board [0][2] == 'x' || board[2][0] == 'x' || board[2][2] == 'x') {
                     board[1][1] = 'o';
                 }
 
                 // senão, o bot marca em alguma posição aleatória
-
                 else {
                     do {
                         x = rand () % 3;
@@ -90,91 +100,41 @@ int player_vs_computer () {
 
                     board[x][y] = 'o';
                 }
-
-                marked_positions += 2;
-                current_player ++;
-
-                display_board (board);
             }
 
-            if (current_player == 1) {
-
-                printf ("%s, digite o comando: ", player.name);
-                fgets (command, COMMAND_NAME, stdin);
-
-                while (command[7] < 49 || command[7] > 51 || command[8] < 49 || command[8] > 51) {
-        
-                    printf (RED(BOLD("\nERRO: Posição inválida.")));
-                    printf ("\n\n");
-
-                    printf ("%s, digite o comando: ", player.name);
-                    fgets (command, COMMAND_NAME, stdin);
-                }
-
-                command[0] = command [7];
-                command[1] = command [8];
-                command[2] = '\0';
-
-                coordinates = atoi (command);
-                
-                x = (((coordinates / 10) % 10)) - 1;
-                y = (coordinates % 10) - 1;
-
-                while (board[x][y] != ' ') {
-
-                    printf (RED(BOLD("\nERRO: Posição já preenchida.")));
-                    printf ("\n\n");
-
-                    printf ("%s, digite o comando: ", player.name);
-                    fgets (command, COMMAND_NAME, stdin);
-                }
-
-                board[x][y] = 'x';
-
-                marked_positions++;
-
-                display_board (board);
-
-                if (marked_positions >= 5) {
-
-                    if (verify_winner (board) == 1) {
-
-                        printf ("Parabéns! Você ganhou ;)\n\n");
-                        // player.victories++;
-                        // computer.defeats++;
-
-                        return 0;
-                    }
-                }
-
-                printf ("\nMinha vez :)\n");
-
+            else {
                 calculate_position (board);
+            }
 
-                marked_positions++;
+            game.marked_positions++;
 
-                display_board (board);
+            display_board (board);
 
-                if (marked_positions >= 5) {
+            if (game.marked_positions >= 5) {
 
-                    if (verify_winner (board) == 2) {
+                if (verify_winner (board) == 2) {
 
-                        printf ("Eu ganhei ;)\n\n");
-                        // computer.victories++;
-                        // player.defeats++;
+                    printf ("Eu venci ;)\n\n");
 
-                        return 0;
-                    }
+                    computer.victories++;
+                    player1->defeats++;
+
+                    break;
                 }
             }
+
+            game.last_player = 2;
         }
 
-        printf ("Eta! Deu velha, ninguém venceu ;)\n\n");
+        if (game.marked_positions == 9) {
 
-        // player.draws++;
-        // computer.draws++;
+            printf ("Eta! Deu velha, ninguém venceu ;)\n\n");
 
-        return 0;
+            player1->draws++;
+            computer.draws++;
+
+            break;
+        }
     }
 
     return 0;

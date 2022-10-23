@@ -3,7 +3,7 @@
 // 22.1.4026
 
 #include <stdio.h>
-#include <unistd.h>
+// #include <unistd.h>
 
 #include "game_interface.h"
 #include "formatting.h"
@@ -20,9 +20,9 @@ void display_name () {
     printf (BLUE(BOLD("        ██ ██    ██ ██   ███ ██    ██     ██   ██ ███████     ██    ██ █████   ██      ███████ ███████  \n")));
     printf (BLUE(BOLD("   ██   ██ ██    ██ ██    ██ ██    ██     ██   ██ ██   ██      ██  ██  ██      ██      ██   ██ ██   ██  \n")));
     printf (BLUE(BOLD("    █████   ██████   ██████   ██████      ██████  ██   ██       ████   ███████ ███████ ██   ██ ██   ██  \n")));
-    printf ("\n\n");
+    printf ("\n");
 
-    sleep (1); // função que vai dar um delay entre o nome e o menu
+    // sleep (1); // função que vai dar um delay entre o nome e o menu
 }
 
 void display_ascii_txt (char file_name[]) {
@@ -43,6 +43,7 @@ void display_ascii_txt (char file_name[]) {
 
 void display_menu () {
 
+    printf ("\n");
     printf (CYAN(BOLD("\t0. Sair do jogo\n")));
     // usleep (500000);
     printf (CYAN(BOLD("\t1. Começar um novo jogo\n")));
@@ -55,7 +56,7 @@ void display_menu () {
     // usleep (500000);
     printf (CYAN(BOLD("\tDurante o jogo digite “voltar” para retornar ao menu.\n")));
     // usleep (500000);
-    printf ("\n\n");
+    printf ("\n");
 }
 
 void display_board (char board[3][3]) {
@@ -73,23 +74,6 @@ void display_board (char board[3][3]) {
     printf ("\n");
 }
 
-// void clear_screen () {
-//     printf("\e[1;1H\e[2J");
-// }
-
-// void clean_buffer () {
-    
-//     int c;
-
-//     do {
-//         c = getchar();
-//     } while (c != '\n' && c != EOF);
-// }
-
-// void clear_buffer () {
-    
-//     char c;
-
-//     scanf("%c", &c);
-//     getchar();
-// }
+void clear_screen () {
+    printf("\e[1;1H\e[2J");
+}

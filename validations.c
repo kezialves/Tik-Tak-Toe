@@ -49,29 +49,7 @@ void verify_name_p2 (char *player1_name, char *player2_name) {
         fgets (player2_name, PLAYER_NAME, stdin);
         printf ("\n");
 
-        while (!strcmp (player2_name, "\n")) {
-
-            printf (RED(BOLD("ERRO: Nome inválido.\n")));
-            printf ("\nDigite o nome do jogador 2: ");
-            fgets (player2_name, PLAYER_NAME, stdin);
-            printf ("\n");
-        }
-
-        while (!strcmp (player2_name, "Computador\n")) {
-
-            printf (RED(BOLD("ERRO: Certeza que você se chama Computador?\n")));
-            printf ("\nDigite o nome do jogador 2: ");
-            fgets (player2_name, PLAYER_NAME, stdin);
-            printf ("\n");
-
-            while (!strcmp (player2_name, "\n")) {
-
-                printf (RED(BOLD("ERRO: Nome inválido.\n")));
-                printf ("\nDigite o nome do jogador 2: ");
-                fgets (player2_name, PLAYER_NAME, stdin);
-                printf ("\n");
-            }
-        }
+        verify_name (2, player2_name);
     }
 }
 
@@ -109,7 +87,7 @@ void verify_positions (char board[][3], int *x, int *y, char *name) {
         *x = (((coordinates / 10) % 10)) - 1;
         *y = (coordinates % 10) - 1;
 
-        while (*x < 1 || *x > 3 || *y < 1 || *y > 3) {
+        while (*x < 0 || *x > 2 || *y < 0 || *y > 2) {
 
             printf (RED(BOLD("\nERRO: Posição inválida.")));
             printf ("\n\n");
@@ -214,7 +192,7 @@ void verify_file_name (char *file_name) {
             file_name[size_of_file_name - 3] != 'x' ||
             file_name[size_of_file_name - 2] != 't') {
 
-        printf (RED(BOLD("\nERRO: O tipo do arquivo é inválido, informe um .txt\n\n")));
+        printf (RED(BOLD("ERRO: O tipo do arquivo é inválido, informe um .txt\n\n")));
 
         printf ("Digite o nome do arquivo do jogo: ");
         fgets (file_name, FILE_NAME, stdin);
@@ -224,7 +202,7 @@ void verify_file_name (char *file_name) {
     }
 }
 
-int verify_file_exists (char * file_name) {
+int verify_file_exists (char *file_name) {
 
     FILE * file;
 
@@ -236,4 +214,19 @@ int verify_file_exists (char * file_name) {
     }
 
     return 0;
+}
+
+void verify_file (char *file_name) {
+
+    verify_file_name (file_name);
+
+    while (!verify_file_exists (file_name)) {
+
+        printf (RED(BOLD("ERRO: O arquivo não existe.\n")));
+        printf ("Digite o nome do arquivo do jogo: ");
+        fgets (file_name, FILE_NAME, stdin);
+        printf ("\n");
+
+        verify_file_name (file_name);
+    }
 }
