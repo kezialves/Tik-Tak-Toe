@@ -8,7 +8,7 @@
 #include "structs.h"
 
 // função que recebe a opção
-void choose_menu (int time);
+void choose_menu ();
 
 // função que encerra o jogo
 void close_game ();

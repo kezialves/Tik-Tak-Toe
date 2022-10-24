@@ -23,10 +23,7 @@ void display_board (char board[3][3]);
 // função que llmpa a tela do terminal
 void clear_screen ();
 
-// função que limpa o buffer de entrada
-// void clean_buffer ();
-
-// função que limpa o buffer de entrada
-// void clear_buffer ();
+// função que printa um caractere várias vezes
+void print_various_times (char *c, int times);
 
 #endif

@@ -72,10 +72,9 @@ int player_vs_computer (char board[][3], Game game, Player *player1) {
 
             else if (!strcmp(command.first_command, "voltar")) {
                 strcpy (command.second_command, "current_game.txt");
-                save_game (command.second_command, player1->name, computer.name, board, 1);
-                display_menu ();
-                choose_menu (1);
-                break;
+                save_game (command.second_command, player1->name, computer.name, board, 2);
+                clear_screen ();
+                return 1;
             }
         }
 

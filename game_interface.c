@@ -7,6 +7,7 @@
 
 #include "game_interface.h"
 #include "formatting.h"
+#include "game_essential.h"
 
 void display_name () {
 
@@ -75,5 +76,13 @@ void display_board (char board[3][3]) {
 }
 
 void clear_screen () {
+
     printf("\e[1;1H\e[2J");
+}
+
+void print_various_times (char *c, int times) {
+
+    for (int i = 0; i < times; i++) {
+        printf (BLUE(BOLD("%s")), c);
+    }
 }

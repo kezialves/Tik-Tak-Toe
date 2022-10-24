@@ -45,6 +45,7 @@ int player_vs_player (char board[][3], Game game, Player *player1, Player *playe
 
                     if (verify_winner (board) == 1) {
 
+                        printf ("Parabéns, %s! Você venceu ;)\n\n", player1->name);
 
                         player1->victories++;
                         player2->defeats++;
@@ -63,9 +64,9 @@ int player_vs_player (char board[][3], Game game, Player *player1, Player *playe
             else if (!strcmp(command.first_command, "voltar")) {
                 strcpy (command.second_command, "current_game.txt");
                 save_game (command.second_command, player1->name, player2->name, board, 2);
-                display_menu ();
-                choose_menu (1);
-                break;
+                printf ("\nVOLTEI\n");
+                clear_screen ();
+                return 1;
             }
         }
 
@@ -92,6 +93,8 @@ int player_vs_player (char board[][3], Game game, Player *player1, Player *playe
 
                     if (verify_winner (board) == 2) {
 
+                        printf ("Parabéns, %s! Você venceu ;)\n\n", player2->name);
+
                         player2->victories++;
                         player1->defeats++;
 
@@ -109,14 +112,15 @@ int player_vs_player (char board[][3], Game game, Player *player1, Player *playe
             else if (!strcmp(command.first_command, "voltar")) {
                 strcpy (command.second_command, "current_game.txt");
                 save_game (command.second_command, player1->name, player2->name, board, 1);
-                display_menu ();
-                choose_menu (1);
-                break;
+                printf ("\nVOLTEI\n");
+                clear_screen ();
+                return 1;
             }
         }
 
         if (game.marked_positions == 9) {
 
+            printf ("Eta! Deu velha, ninguém venceu ;)\n\n");
 
             player1->draws++;
             player2->draws++;

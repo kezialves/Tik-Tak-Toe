@@ -58,10 +58,12 @@ void continue_saved_game (int option) {
 
             if (c == 'X') {
                 board[i][j] = 'x';
+                game.marked_positions++;
             }
 
             else if (c == 'O') {
                 board[i][j] = 'o';
+                game.marked_positions++;
             }
 
             else if (c == '-') {
@@ -77,20 +79,42 @@ void continue_saved_game (int option) {
     fclose (file);
 
     if (game.number_of_players == 1) {
-        player_vs_computer (board, game, &player1);
+
+        if (player_vs_computer (board, game, &player1)) {
+
+            display_menu ();
+            choose_menu ();
+        }
+
+        else {
+            printf ("\nDigite qualquer tecla para continuar: ");
+            char key[COMMAND_NAME];
+            fgets (key, COMMAND_NAME, stdin);
+
+            clear_screen ();
+            display_menu ();
+            choose_menu ();
+        }
     }
 
     else {
-        player_vs_player (board, game, &player1, &player2);
+
+        if (player_vs_player (board, game, &player1, &player2)) {
+            
+            display_menu ();
+            choose_menu ();
+        }
+
+        else {
+            printf ("\nDigite qualquer tecla para continuar: ");
+            char key[COMMAND_NAME];
+            fgets (key, COMMAND_NAME, stdin);
+
+            clear_screen ();
+            display_menu ();
+            choose_menu ();
+        }
     }
-
-    printf ("\nDigite qualquer tecla para continuar: ");
-    char key[COMMAND_NAME];
-    fgets (key, COMMAND_NAME, stdin);
-
-    clear_screen ();
-    display_menu ();
-    choose_menu (1);
 }
 
 void save_game (char *file_name, char *player1_name, char *player2_name, char board[][3], int last_player) {

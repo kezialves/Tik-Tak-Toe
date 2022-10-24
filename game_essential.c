@@ -15,8 +15,9 @@
 #include "game_interface.h"
 #include "game_files.h"
 #include "validations.h"
+#include "ranking.h"
 
-void choose_menu (int time) {
+void choose_menu () {
 
     char option[COMMAND_NAME];
 
@@ -27,7 +28,7 @@ void choose_menu (int time) {
     // como eu usei a função fgets, que também pega o \n, ele se inclui nas comparações
     // não acho necessário remover o \n antes de comparar, pois esse número não será usado novamente
 
-    if (time == 0) {
+    if (!verify_file_exists ("current_game.txt")) {
         while (!strcmp (option, "3\n")) {
             printf (RED(BOLD("ERRO: Não há nenhum jogo em andamento.")));
             printf ("\n\n");
@@ -37,6 +38,8 @@ void choose_menu (int time) {
             printf ("\n");
         }
     }
+
+    clear_screen ();
 
     while (!(!strcmp (option, "0\n") || !strcmp (option, "1\n")  || !strcmp (option, "2\n")  || !strcmp (option, "3\n")  || !strcmp (option, "4\n"))) {
 
@@ -64,12 +67,20 @@ void choose_menu (int time) {
         continue_saved_game (3);
     }
 
-    // else {
-    //     display_ranking ();
-    // }
+    else {
+        display_ranking ();
+    }
 }
 
 void close_game () {
+
+    // se tiver um jogo em andamento, encerra o jogo
+    
+    if (verify_file_exists ("current_game.txt")) {
+        remove ("current_game.txt");
+    }
+
+    // limpa a tela, mostra a mensagem final e encerra o programa
 
     clear_screen ();
     usleep (500000);
@@ -78,6 +89,9 @@ void close_game () {
     display_ascii_txt ("pucca_ascii.txt");
     printf ("\n");
     usleep (500000);
+
+    // função da stdlib que encerra todo o programa
+    exit (0);
 }
 
 void new_game () {
@@ -123,9 +137,6 @@ void new_game () {
     verify_name (1, player1.name);
     initializes_player (&player1);
 
-    // tira o "\n" do nome pra imprimir certinho
-    player1.name[strlen (player1.name) - 1] = '\0';
-
     // se o número de jogadores for 2, pega o nome do jogador 2 e armazena na struct
     if (game.number_of_players == 2) {
 
@@ -136,6 +147,12 @@ void new_game () {
         // valida o nome do bichinho e inicializa os pontos
         verify_name_p2 (player1.name, player2.name);
         initializes_player (&player2);
+    }
+
+    // tira o "\n" do nome pra imprimir certinho
+    player1.name[strlen (player1.name) - 1] = '\0';
+
+    if (game.number_of_players == 2) {
 
         // tira o "\n" do nome pra imprimir certinho
         player2.name[strlen (player2.name) - 1] = '\0';
@@ -144,21 +161,44 @@ void new_game () {
     clear_screen ();
 
     // chama a função correspondente ao número de jogadores
+
     if (!strcmp (number_of_players, "1\n")) {
-        player_vs_computer (board, game, &player1);
+
+        if (player_vs_computer (board, game, &player1)) {
+
+            display_menu ();
+            choose_menu ();
+        }
+
+        else {
+            printf ("\nDigite qualquer tecla para continuar: ");
+            char key[COMMAND_NAME];
+            fgets (key, COMMAND_NAME, stdin);
+
+            clear_screen ();
+            display_menu ();
+            choose_menu ();
+        }
     }
 
     else {
-        player_vs_player (board, game, &player1, &player2);
+
+        if (player_vs_player (board, game, &player1, &player2)) {
+            
+            display_menu ();
+            choose_menu ();
+        }
+
+        else {
+            printf ("\nDigite qualquer tecla para continuar: ");
+            char key[COMMAND_NAME];
+            fgets (key, COMMAND_NAME, stdin);
+
+            clear_screen ();
+            display_menu ();
+            choose_menu ();
+        }
     }
-
-    printf ("\nDigite qualquer tecla para continuar: ");
-    char key[COMMAND_NAME];
-    fgets (key, COMMAND_NAME, stdin);
-
-    clear_screen ();
-    display_menu ();
-    choose_menu (1);
 }
 
 void initializes_player (Player *player) {

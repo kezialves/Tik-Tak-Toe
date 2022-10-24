@@ -11,9 +11,7 @@ int main () {
 
     display_name ();
     display_menu ();
-    choose_menu (0);
+    choose_menu ();
 
     return 0;
 }
-
-// 5 - digitar o nome do arquivo quando continuar um jogo salvo
