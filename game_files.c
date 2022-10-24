@@ -14,28 +14,33 @@
 #include "game_inteligence.h"
 #include "player_vs_player.h"
 
-void continue_saved_game () {
+void continue_saved_game (int option) {
 
     Game game;
     Player player1, player2;
 
-    // cria e inicializa o tabuleiro
-    char board[3][3] = { {' ', ' ', ' '},
-                         {' ', ' ', ' '},
-                         {' ', ' ', ' '} };
+    // cria o tabuleiro
+    char board[3][3];
 
     char game_file_name[FILE_NAME];
     char c;
 
-    printf ("Digite o nome do arquivo do jogo: ");
-    fgets (game_file_name, FILE_NAME, stdin);
-    printf ("\n");
+    if (option == 2) {
+        printf ("Digite o nome do arquivo do jogo: ");
+        fgets (game_file_name, FILE_NAME, stdin);
+        printf ("\n");
 
-    verify_file (game_file_name);
+        verify_file (game_file_name);
+    }
+
+    else if (option == 3) {
+        strcpy (game_file_name, "current_game.txt");
+    }
 
     FILE * file = fopen (game_file_name, "r");
 
     fscanf (file, "%d", &game.number_of_players);
+    c = fgetc (file);
 
     fgets (player1.name, PLAYER_NAME, file);
     player1.name[strlen (player1.name) - 1] = '\0';
@@ -46,29 +51,28 @@ void continue_saved_game () {
     }
 
     for (int i = 0; i < 3; i++) {
-        for (int j = 0; i < 3; i++) {
+
+        for (int j = 0; j < 3; j++) {
 
             c = fgetc (file);
 
             if (c == 'X') {
                 board[i][j] = 'x';
-                game.marked_positions++;
             }
 
             else if (c == 'O') {
                 board[i][j] = 'o';
-                game.marked_positions++;
             }
 
             else if (c == '-') {
                 board[i][j] = ' ';
             }
-
-            else {
-                i--;
-            }
+            
+            c = fgetc (file);
         }
     }
+
+    fscanf (file, "%d", &game.last_player);
 
     fclose (file);
 
@@ -89,9 +93,11 @@ void continue_saved_game () {
     choose_menu (1);
 }
 
-void save_game (char file_name[FILE_NAME], char *player1_name, char *player2_name, char board[][3], int last_player) {
+void save_game (char *file_name, char *player1_name, char *player2_name, char board[][3], int last_player) {
 
-    verify_file_name (file_name);
+    if (strcmp (file_name, "current_game.txt")) {
+        verify_file_name (file_name);
+    }
 
     FILE * file = fopen (file_name, "w+");
 

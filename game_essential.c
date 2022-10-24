@@ -57,12 +57,12 @@ void choose_menu (int time) {
     }
 
     else if (!strcmp (option, "2\n")) {
-        continue_saved_game ();
+        continue_saved_game (2);
     }
 
-    // else if (!strcmp (option, "3\n")) {
-    //     continue_current_game ();
-    // }
+    else if (!strcmp (option, "3\n")) {
+        continue_saved_game (3);
+    }
 
     // else {
     //     display_ranking ();
@@ -173,7 +173,10 @@ void get_command (char *player_name, Command *command) {
     printf ("%s, digite o comando: ", player_name);
     scanf ("%s", command->first_command);
     getchar ();
-    fgets (command->second_command, FILE_NAME, stdin);
+
+    if (strcmp (command->first_command, "voltar")) {
+        fgets (command->second_command, FILE_NAME, stdin);
+    }
 
     while (!(!strcmp (command->first_command, "marcar") || !strcmp (command->first_command, "salvar") || !strcmp (command->first_command, "voltar"))) {
 

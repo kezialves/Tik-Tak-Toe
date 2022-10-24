@@ -222,7 +222,7 @@ void verify_file (char *file_name) {
 
     while (!verify_file_exists (file_name)) {
 
-        printf (RED(BOLD("ERRO: O arquivo não existe.\n")));
+        printf (RED(BOLD("ERRO: O arquivo não existe.\n\n")));
         printf ("Digite o nome do arquivo do jogo: ");
         fgets (file_name, FILE_NAME, stdin);
         printf ("\n");

@@ -74,6 +74,8 @@ int player_vs_computer (char board[][3], Game game, Player *player1) {
                 strcpy (command.second_command, "current_game.txt");
                 save_game (command.second_command, player1->name, computer.name, board, 1);
                 display_menu ();
+                choose_menu (1);
+                break;
             }
         }
 
@@ -135,6 +137,10 @@ int player_vs_computer (char board[][3], Game game, Player *player1) {
 
             break;
         }
+    }
+
+    if (verify_file_exists ("current_game.txt")) {
+        remove ("current_game.txt");
     }
 
     return 0;

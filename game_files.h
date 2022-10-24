@@ -8,12 +8,9 @@
 #include "formatting.h"
 
 // função que continua um jogo salvo
-void continue_saved_game ();
-
-// função que continua o jogo atual
-void continue_current_game ();
+void continue_saved_game (int option);
 
 // função que salva o jogo
-void save_game (char file_name[FILE_NAME], char *player1_name, char *player2_name, char board[][3], int last_player);
+void save_game (char *file_name, char *player1_name, char *player2_name, char board[][3], int last_player);
 
 #endif
