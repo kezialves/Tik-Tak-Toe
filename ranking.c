@@ -13,6 +13,7 @@
 #include "formatting.h"
 #include "validations.h"
 #include "game_interface.h"
+#include "game_essential.h"
 
 void display_ranking () {
 
@@ -130,7 +131,8 @@ Player * create_players_struct (int number_of_players) {
 
 void update_ranking (Player player1, Player player2) {
 
-    int number_of_players;
+    int number_of_players = 0;
+    int aux_players;
 
     if (!verify_file_exists ("velha.ini")) {
         
@@ -187,9 +189,11 @@ void update_ranking (Player player1, Player player2) {
 
         fclose (ranking);
 
+        aux_players = number_of_players;
+
         for (int i = 0; i < number_of_players; i++) {
             if (strcmp (players[i].name, player1.name) || strcmp (players[i].name, player2.name)) {
-                number_of_players++;
+                aux_players++;
             }
         }
 
@@ -210,6 +214,15 @@ void update_ranking (Player player1, Player player2) {
         fclose (new_ranking);
 
         free (players);
+
+        // clear_screen ();
+        // printf ("\nDigite qualquer tecla para continuar: ");
+        // char key[COMMAND_NAME];
+        // fgets (key, COMMAND_NAME, stdin);
+
+        // clear_screen ();
+        // display_menu ();
+        // choose_menu ();
     }
 }
 

@@ -14,7 +14,7 @@
 #include "game_files.h"
 #include "validations.h"
 
-int player_vs_player (char board[][3], Game game, Player *player1, Player *player2) {
+int player_vs_player (char board[][3], Game game, Player player1, Player player2) {
 
     Command command;
 
@@ -24,7 +24,7 @@ int player_vs_player (char board[][3], Game game, Player *player1, Player *playe
 
         if (game.last_player == 2) {
 
-            get_command (player1->name, &command);
+            get_command (player1.name, &command);
 
             if (!strcmp(command.first_command, "marcar")) {
 
@@ -35,7 +35,7 @@ int player_vs_player (char board[][3], Game game, Player *player1, Player *playe
                 x = (((coordinates / 10) % 10)) - 1;
                 y = (coordinates % 10) - 1;
 
-                board[3][3] = mark_position (board, &x, &y, 1, player1->name);
+                board[3][3] = mark_position (board, &x, &y, 1, player1.name);
 
                 game.marked_positions++;
 
@@ -45,10 +45,10 @@ int player_vs_player (char board[][3], Game game, Player *player1, Player *playe
 
                     if (verify_winner (board) == 1) {
 
-                        printf ("Parabéns, %s! Você venceu ;)\n\n", player1->name);
+                        printf ("Parabéns, %s! Você venceu ;)\n\n", player1.name);
 
-                        player1->victories++;
-                        player2->defeats++;
+                        player1.victories++;
+                        player2.defeats++;
 
                         break;
                     }
@@ -58,13 +58,12 @@ int player_vs_player (char board[][3], Game game, Player *player1, Player *playe
             }
 
             else if (!strcmp(command.first_command, "salvar")) {
-                save_game (command.second_command, player1->name, player2->name, board, 2);
+                save_game (command.second_command, player1.name, player2.name, board, 2);
             }
 
             else if (!strcmp(command.first_command, "voltar")) {
                 strcpy (command.second_command, "current_game.txt");
-                save_game (command.second_command, player1->name, player2->name, board, 2);
-                printf ("\nVOLTEI\n");
+                save_game (command.second_command, player1.name, player2.name, board, 2);
                 clear_screen ();
                 return 1;
             }
@@ -72,7 +71,7 @@ int player_vs_player (char board[][3], Game game, Player *player1, Player *playe
 
         else if (game.last_player == 1) {
 
-            get_command (player2->name, &command);
+            get_command (player2.name, &command);
 
             if (!strcmp(command.first_command, "marcar")) {
 
@@ -83,7 +82,7 @@ int player_vs_player (char board[][3], Game game, Player *player1, Player *playe
                 x = (((coordinates / 10) % 10)) - 1;
                 y = (coordinates % 10) - 1;
 
-                board[3][3] = mark_position (board, &x, &y, 2, player2->name);
+                board[3][3] = mark_position (board, &x, &y, 2, player2.name);
 
                 game.marked_positions++;
 
@@ -93,10 +92,10 @@ int player_vs_player (char board[][3], Game game, Player *player1, Player *playe
 
                     if (verify_winner (board) == 2) {
 
-                        printf ("Parabéns, %s! Você venceu ;)\n\n", player2->name);
+                        printf ("Parabéns, %s! Você venceu ;)\n\n", player2.name);
 
-                        player2->victories++;
-                        player1->defeats++;
+                        player2.victories++;
+                        player1.defeats++;
 
                         break;
                     }
@@ -106,12 +105,12 @@ int player_vs_player (char board[][3], Game game, Player *player1, Player *playe
             }
 
             else if (!strcmp(command.first_command, "salvar")) {
-                save_game (command.second_command, player1->name, player2->name, board, 1);
+                save_game (command.second_command, player1.name, player2.name, board, 1);
             }
 
             else if (!strcmp(command.first_command, "voltar")) {
                 strcpy (command.second_command, "current_game.txt");
-                save_game (command.second_command, player1->name, player2->name, board, 1);
+                save_game (command.second_command, player1.name, player2.name, board, 1);
                 printf ("\nVOLTEI\n");
                 clear_screen ();
                 return 1;
@@ -122,8 +121,8 @@ int player_vs_player (char board[][3], Game game, Player *player1, Player *playe
 
             printf ("Eta! Deu velha, ninguém venceu ;)\n\n");
 
-            player1->draws++;
-            player2->draws++;
+            player1.draws++;
+            player2.draws++;
 
             break;
         }

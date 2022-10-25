@@ -8,7 +8,7 @@
 #include "structs.h"
 
 // função que roda o jogo contra o computador
-int player_vs_computer (char board[][3], Game game, Player *player1);
+int player_vs_computer (char board[][3], Game game, Player player1);
 
 // função que calcula a melhor posição
 void calculate_position (char board[][3]);

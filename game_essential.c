@@ -164,7 +164,7 @@ void new_game () {
 
     if (!strcmp (number_of_players, "1\n")) {
 
-        if (player_vs_computer (board, game, &player1)) {
+        if (player_vs_computer (board, game, player1)) {
 
             display_menu ();
             choose_menu ();
@@ -183,7 +183,7 @@ void new_game () {
 
     else {
 
-        if (player_vs_player (board, game, &player1, &player2)) {
+        if (player_vs_player (board, game, player1, player2)) {
             
             display_menu ();
             choose_menu ();

@@ -80,7 +80,7 @@ void continue_saved_game (int option) {
 
     if (game.number_of_players == 1) {
 
-        if (player_vs_computer (board, game, &player1)) {
+        if (player_vs_computer (board, game, player1)) {
 
             display_menu ();
             choose_menu ();
@@ -99,7 +99,7 @@ void continue_saved_game (int option) {
 
     else {
 
-        if (player_vs_player (board, game, &player1, &player2)) {
+        if (player_vs_player (board, game, player1, player2)) {
             
             display_menu ();
             choose_menu ();
