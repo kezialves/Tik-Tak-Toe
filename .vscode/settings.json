@@ -4,6 +4,7 @@
         "game_interface.h": "c",
         "game_essential.h": "c",
         "player_vs_player.h": "c",
-        "formatting.h": "c"
+        "formatting.h": "c",
+        "validations.h": "c"
     }
 }

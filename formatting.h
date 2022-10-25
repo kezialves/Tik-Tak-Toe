@@ -33,6 +33,7 @@
 
 // macro que define o máximo de caracteres do nome de um jogador
 #define PLAYER_NAME 256
+
 // macro que define o máximo de caracteres de um comando
 #define COMMAND_NAME 267 // 7 para o comando e, no caso do "salvar", + 256 para o nome + 4 para o ".txt"
 
